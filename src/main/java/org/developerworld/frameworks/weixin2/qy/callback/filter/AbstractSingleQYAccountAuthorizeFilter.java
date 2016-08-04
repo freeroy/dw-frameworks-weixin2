@@ -6,7 +6,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 
+import org.developerworld.frameworks.weixin2.commons.api.ApiResponse;
 import org.developerworld.frameworks.weixin2.qy.api.AccessTokenApi;
+import org.developerworld.frameworks.weixin2.qy.api.dto.rep.AccessTokenRep;
 
 /**
  * 单一企业号成员单点登录过滤器
@@ -20,6 +22,8 @@ public abstract class AbstractSingleQYAccountAuthorizeFilter extends AbstractAut
 	private String corpID;
 	/* 企业号管理组secret */
 	private String secret;
+	private AccessTokenRep accessToken;
+	private Long getAccessTokenDateTime;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -47,6 +51,27 @@ public abstract class AbstractSingleQYAccountAuthorizeFilter extends AbstractAut
 
 	@Override
 	protected String getAccessToken(ServletRequest request) throws IOException, ServletException {
-		return AccessTokenApi.getAccessToken(getCorpID(request), getSecret()).getResponseObject().getAccessToken();
+		if (accessToken == null || getAccessTokenDateTime == null
+				|| (System.currentTimeMillis() - getAccessTokenDateTime) > (accessToken.getExpiresIn() * 1000)) {
+			// 获取accessToken采用同步方式
+			synchronized (this) {
+				if (accessToken == null || getAccessTokenDateTime == null || (System.currentTimeMillis()
+						- getAccessTokenDateTime) > (accessToken.getExpiresIn() * 1000)) {
+					accessToken = null;
+					getAccessTokenDateTime = null;
+					try {
+						ApiResponse<AccessTokenRep> apiRes = AccessTokenApi.getAccessToken(getCorpID(request),
+								getSecret());
+						if (!apiRes.isError()) {
+							accessToken = apiRes.getResponseObject();
+							getAccessTokenDateTime = System.currentTimeMillis();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return accessToken == null ? null : accessToken.getAccessToken();
 	}
 }
