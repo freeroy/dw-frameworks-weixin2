@@ -207,9 +207,11 @@ public class SimpleSingleQYAccountAuthorizeFilter extends AbstractSingleQYAccoun
 			UserInfoRep userInfo) throws IOException, ServletException {
 		// 执行信息写cookie
 		HttpServletResponse _response = (HttpServletResponse) response;
+		String cookieDomain=getCookieDomain();
 		if (StringUtils.isNotBlank(userInfo.getOpenId())) {
 			Cookie openIdCookie = new Cookie(getOpenIdCookieName(), getInsertCookieValue(userInfo.getOpenId()));
-			openIdCookie.setDomain(getCookieDomain());
+			if(StringUtils.isNotBlank(cookieDomain))
+				openIdCookie.setDomain(cookieDomain);
 			openIdCookie.setMaxAge(getCookieMaxAge());
 			openIdCookie.setPath(getCookiePath());
 			openIdCookie.setSecure(isCookieSecure());
@@ -217,7 +219,8 @@ public class SimpleSingleQYAccountAuthorizeFilter extends AbstractSingleQYAccoun
 		}
 		if (StringUtils.isNotBlank(userInfo.getUserId())) {
 			Cookie userIdCookie = new Cookie(getUserIdCookieName(), getInsertCookieValue(userInfo.getUserId()));
-			userIdCookie.setDomain(getCookieDomain());
+			if(StringUtils.isNotBlank(cookieDomain))
+				userIdCookie.setDomain(cookieDomain);
 			userIdCookie.setMaxAge(getCookieMaxAge());
 			userIdCookie.setPath(getCookiePath());
 			userIdCookie.setSecure(isCookieSecure());
@@ -225,7 +228,8 @@ public class SimpleSingleQYAccountAuthorizeFilter extends AbstractSingleQYAccoun
 		}
 		if (StringUtils.isNotBlank(userInfo.getDeviceId())) {
 			Cookie deviceIdCookie = new Cookie(getDeviceIdCookieName(), getInsertCookieValue(userInfo.getDeviceId()));
-			deviceIdCookie.setDomain(getCookieDomain());
+			if(StringUtils.isNotBlank(cookieDomain))
+				deviceIdCookie.setDomain(cookieDomain);
 			deviceIdCookie.setMaxAge(getCookieMaxAge());
 			deviceIdCookie.setPath(getCookiePath());
 			deviceIdCookie.setSecure(isCookieSecure());
@@ -234,7 +238,8 @@ public class SimpleSingleQYAccountAuthorizeFilter extends AbstractSingleQYAccoun
 		// 增加一个cookie，用于校验cookie
 		Cookie authorizeTokenCookie = new Cookie(getAuthorizeVerifyCodeCookieName(),
 				getInsertCookieValue(buildAuthorizeVerifyCode(userInfo)));
-		authorizeTokenCookie.setDomain(getCookieDomain());
+		if(StringUtils.isBlank(cookieDomain))
+			authorizeTokenCookie.setDomain(cookieDomain);
 		authorizeTokenCookie.setMaxAge(getCookieMaxAge());
 		authorizeTokenCookie.setPath(getCookiePath());
 		authorizeTokenCookie.setSecure(isCookieSecure());
@@ -242,7 +247,8 @@ public class SimpleSingleQYAccountAuthorizeFilter extends AbstractSingleQYAccoun
 		// 向下执行程序
 		//chain.doFilter(request, response);
 		//由于cookie需要刷新请求后才能被过滤连下级获取，所以这里“刷新”一次
-		((HttpServletResponse)response).sendRedirect(getRedirectUri(request));
+		//((HttpServletResponse)response).sendRedirect(getRedirectUri(request));//这样操作会导致写入cookie失败
+		((HttpServletResponse)response).getWriter().println("<script type=\"text/javascript\">location.href=\""+getRedirectUri(request)+"\"</script>");
 	}
 
 	private String getSelectCookieValue(String cookieValue) throws UnsupportedEncodingException {

@@ -50,11 +50,10 @@ public class UserApi extends ApiSupport {
 	public static ApiResponse<UseridConvertOpenidRep> convertToOpenid(String accessToken, String userid,
 			Integer agentid) {
 		if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(userid))
-			throw new IllegalArgumentException(
-					"The accessToken、userid can not be blank!");
+			throw new IllegalArgumentException("The accessToken、userid can not be blank!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/convert_to_openid?" + query;
 		Map<String, Object> jsonParam = new LinkedHashMap<String, Object>();
 		jsonParam.put("userid", userid);
@@ -73,11 +72,10 @@ public class UserApi extends ApiSupport {
 	 */
 	public static ApiResponse<String> convertToUserid(String accessToken, String openid) {
 		if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(openid))
-			throw new IllegalArgumentException(
-					"The accessToken、userid can not be blank!");
+			throw new IllegalArgumentException("The accessToken、userid can not be blank!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/convert_to_userid?" + query;
 		Map<String, Object> jsonParams = new LinkedHashMap<String, Object>();
 		jsonParams.put("openid", openid);
@@ -108,12 +106,11 @@ public class UserApi extends ApiSupport {
 	 * @return
 	 */
 	public static ApiResponse<Boolean> createUser(String accessToken, UserReq user) {
-		if (StringUtils.isBlank(accessToken) || user==null)
-			throw new IllegalArgumentException(
-					"The accessToken can not be blank and user can not be null!");
+		if (StringUtils.isBlank(accessToken) || user == null)
+			throw new IllegalArgumentException("The accessToken can not be blank and user can not be null!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/create?" + query;
 		String json = object2Json(user);
 		return doPostAndReturnBoolean(url, json);
@@ -127,12 +124,11 @@ public class UserApi extends ApiSupport {
 	 * @return
 	 */
 	public static ApiResponse<Boolean> updateUser(String accessToken, UserReq user) {
-		if (StringUtils.isBlank(accessToken) || user==null)
-			throw new IllegalArgumentException(
-					"The accessToken can not be blank and user can not be null!");
+		if (StringUtils.isBlank(accessToken) || user == null)
+			throw new IllegalArgumentException("The accessToken can not be blank and user can not be null!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/update?" + query;
 		String json = object2Json(user);
 		return doPostAndReturnBoolean(url, json);
@@ -147,12 +143,11 @@ public class UserApi extends ApiSupport {
 	 */
 	public static ApiResponse<Boolean> deleteUser(String accessToken, String userid) {
 		if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(userid))
-			throw new IllegalArgumentException(
-					"The accessToken、userid can not be blank!");
+			throw new IllegalArgumentException("The accessToken、userid can not be blank!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
 		params.add(new BasicNameValuePair("userid", userid));
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/delete?" + query;
 		return doGetAndReturnBoolean(url);
 	}
@@ -164,13 +159,12 @@ public class UserApi extends ApiSupport {
 	 * @param useridlist
 	 * @return
 	 */
-	public static ApiResponse<Boolean> bathDeleteUser(String accessToken, List<String> useridlist) {
-		if (StringUtils.isBlank(accessToken) || (useridlist==null || useridlist.size()<=0))
-			throw new IllegalArgumentException(
-					"The accessToken、useridlist can not be blank!");
+	public static ApiResponse<Boolean> batchDeleteUser(String accessToken, List<String> useridlist) {
+		if (StringUtils.isBlank(accessToken) || (useridlist == null || useridlist.size() <= 0))
+			throw new IllegalArgumentException("The accessToken、useridlist can not be blank!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/batchdelete?" + query;
 		String json = object2Json(new MapBuilder<String, List<String>>().put("useridlist", useridlist).map());
 		return doPostAndReturnBoolean(url, json);
@@ -185,12 +179,11 @@ public class UserApi extends ApiSupport {
 	 */
 	public static ApiResponse<UserRep> getUser(String accessToken, String userid) {
 		if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(userid))
-			throw new IllegalArgumentException(
-					"The accessToken、userid can not be blank!");
+			throw new IllegalArgumentException("The accessToken、userid can not be blank!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
 		params.add(new BasicNameValuePair("userid", userid));
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/get?" + query;
 		return doGetAndReturn(url, UserRep.class);
 	}
@@ -219,18 +212,17 @@ public class UserApi extends ApiSupport {
 	 */
 	public static ApiResponse<List<UserSimpleRep>> getUserSimpleList(String accessToken, int departmentId,
 			boolean fetchChild, UserStatus[] userStatuses) {
-		if (StringUtils.isBlank(accessToken) || departmentId<=0)
-			throw new IllegalArgumentException(
-					"The accessToken can not be blank and departmentId must > 0!");
+		if (StringUtils.isBlank(accessToken) || departmentId <= 0)
+			throw new IllegalArgumentException("The accessToken can not be blank and departmentId must > 0!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
-		params.add(new BasicNameValuePair("department_id", departmentId+""));
+		params.add(new BasicNameValuePair("department_id", departmentId + ""));
 		params.add(new BasicNameValuePair("fetch_child", (fetchChild ? "1" : "0")));
 		if (userStatuses != null && userStatuses.length > 0) {
 			for (UserStatus userStatus : userStatuses)
-				params.add(new BasicNameValuePair("status", userStatus.value()+""));
+				params.add(new BasicNameValuePair("status", userStatus.value() + ""));
 		}
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/simplelist?" + query;
 		String response = doGet(url);
 		ApiResponse<List<UserSimpleRep>> rst = new ApiResponse<List<UserSimpleRep>>();
@@ -278,18 +270,17 @@ public class UserApi extends ApiSupport {
 	 */
 	public static ApiResponse<List<UserRep>> getUserList(String accessToken, int departmentId, boolean fetchChild,
 			UserStatus[] userStatuses) {
-		if (StringUtils.isBlank(accessToken) || departmentId<=0)
-			throw new IllegalArgumentException(
-					"The accessToken can not be blank and departmentId must > 0!");
+		if (StringUtils.isBlank(accessToken) || departmentId <= 0)
+			throw new IllegalArgumentException("The accessToken can not be blank and departmentId must > 0!");
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("access_token", accessToken));
-		params.add(new BasicNameValuePair("department_id", departmentId+""));
+		params.add(new BasicNameValuePair("department_id", departmentId + ""));
 		params.add(new BasicNameValuePair("fetch_child", (fetchChild ? "1" : "0")));
 		if (userStatuses != null && userStatuses.length > 0) {
 			for (UserStatus userStatus : userStatuses)
-				params.add(new BasicNameValuePair("status", userStatus.value()+""));
+				params.add(new BasicNameValuePair("status", userStatus.value() + ""));
 		}
-		String query=URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
+		String query = URLEncodedUtils.format(params, REQUEST_CONTENT_CHARSET);
 		String url = "https://qyapi.weixin.qq.com/cgi-bin/user/list?" + query;
 		String response = doGet(url);
 		ApiResponse<List<UserRep>> rst = new ApiResponse<List<UserRep>>();

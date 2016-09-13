@@ -13,28 +13,28 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class ApiException extends Exception {
+public class ApiException {
 
 	@JsonProperty("errcode")
-	private int errCode;
-	
+	private Integer errCode;
+
 	@JsonProperty("errmsg")
 	private String errMsg;
-	
+
 	public ApiException() {
 
 	}
 
-	public ApiException(int errCode, String errMsg) {
+	public ApiException(Integer errCode, String errMsg) {
 		this.errCode = errCode;
 		this.errMsg = errMsg;
 	}
 
-	public int getErrCode() {
+	public Integer getErrCode() {
 		return errCode;
 	}
 
-	public void setErrCode(int errCode) {
+	public void setErrCode(Integer errCode) {
 		this.errCode = errCode;
 	}
 
@@ -47,10 +47,15 @@ public class ApiException extends Exception {
 	}
 
 	@Override
+	public String toString() {
+		return "ApiException [errCode=" + errCode + ", errMsg=" + errMsg + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + errCode;
+		result = prime * result + ((errCode == null) ? 0 : errCode.hashCode());
 		result = prime * result + ((errMsg == null) ? 0 : errMsg.hashCode());
 		return result;
 	}
@@ -64,7 +69,10 @@ public class ApiException extends Exception {
 		if (getClass() != obj.getClass())
 			return false;
 		ApiException other = (ApiException) obj;
-		if (errCode != other.errCode)
+		if (errCode == null) {
+			if (other.errCode != null)
+				return false;
+		} else if (!errCode.equals(other.errCode))
 			return false;
 		if (errMsg == null) {
 			if (other.errMsg != null)
@@ -72,11 +80,6 @@ public class ApiException extends Exception {
 		} else if (!errMsg.equals(other.errMsg))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "WeiXinApiException [errCode=" + errCode + ", errMsg=" + errMsg + "]";
 	}
 
 }

@@ -1,6 +1,7 @@
 package org.developerworld.frameworks.weixin2.qy.api.dto.rep;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -14,8 +15,11 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class UserInfoRep {
 
+	@JsonProperty("UserId")
 	private String userId;
+	@JsonProperty("DeviceId")
 	private String deviceId;
+	@JsonProperty("OpenId")
 	private String openId;
 
 	public String getUserId() {

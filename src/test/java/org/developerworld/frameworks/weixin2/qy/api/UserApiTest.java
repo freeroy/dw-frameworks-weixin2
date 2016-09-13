@@ -77,7 +77,7 @@ public class UserApiTest extends AbstractTestSupport {
 	@Test
 	public void testBathDeleteUser() {
 		UserReq u = buildUser();
-		ApiResponse<Boolean> response = UserApi.bathDeleteUser(accessToken,
+		ApiResponse<Boolean> response = UserApi.batchDeleteUser(accessToken,
 				Arrays.asList(new String[] { u.getUserid() }));
 		if (response.isError())
 			System.out.println("调用出错:" + response.getResponseException());

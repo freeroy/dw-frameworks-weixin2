@@ -2,7 +2,6 @@ package org.developerworld.frameworks.weixin2.qy.callback.filter;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -12,17 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.developerworld.commons.lang.StringUtils;
+import org.developerworld.commons.servlet.AbstractUrlFilter;
 import org.developerworld.frameworks.weixin2.commons.api.ApiResponse;
 import org.developerworld.frameworks.weixin2.qy.api.LoginApi;
 import org.developerworld.frameworks.weixin2.qy.api.dto.rep.UserInfoRep;
 
 /**
- * 成员单点登录过滤器
+ * 成员单点登录过滤器	
  * 
  * @author Roy Huang
  *
  */
-public abstract class AbstractAuthorizeFilter implements Filter {
+public abstract class AbstractAuthorizeFilter extends AbstractUrlFilter {
 
 	private String state = "authorize_state_" + System.currentTimeMillis();
 
@@ -36,12 +36,12 @@ public abstract class AbstractAuthorizeFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
+		super.init(filterConfig);
 		if (filterConfig.getInitParameter("state") != null)
 			setState(filterConfig.getInitParameter("state"));
 	}
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+	public void doFilterWhenUrlPass(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		// 若已经登录，直接放行
 		if (isLogined(request))
@@ -83,11 +83,6 @@ public abstract class AbstractAuthorizeFilter implements Filter {
 				((HttpServletResponse) response).sendRedirect(url);
 			}
 		}
-	}
-
-	@Override
-	public void destroy() {
-
 	}
 
 	/**
