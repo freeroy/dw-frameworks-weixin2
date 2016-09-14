@@ -238,7 +238,7 @@ public class SimpleSingleQYAccountAuthorizeFilter extends AbstractSingleQYAccoun
 		// 增加一个cookie，用于校验cookie
 		Cookie authorizeTokenCookie = new Cookie(getAuthorizeVerifyCodeCookieName(),
 				getInsertCookieValue(buildAuthorizeVerifyCode(userInfo)));
-		if(StringUtils.isBlank(cookieDomain))
+		if(StringUtils.isNotBlank(cookieDomain))
 			authorizeTokenCookie.setDomain(cookieDomain);
 		authorizeTokenCookie.setMaxAge(getCookieMaxAge());
 		authorizeTokenCookie.setPath(getCookiePath());
@@ -247,8 +247,8 @@ public class SimpleSingleQYAccountAuthorizeFilter extends AbstractSingleQYAccoun
 		// 向下执行程序
 		//chain.doFilter(request, response);
 		//由于cookie需要刷新请求后才能被过滤连下级获取，所以这里“刷新”一次
-		//((HttpServletResponse)response).sendRedirect(getRedirectUri(request));//这样操作会导致写入cookie失败
-		((HttpServletResponse)response).getWriter().println("<script type=\"text/javascript\">location.href=\""+getRedirectUri(request)+"\"</script>");
+		((HttpServletResponse)response).sendRedirect(getRedirectUri(request));//这样可能操作会导致写入cookie失败
+		//((HttpServletResponse)response).getWriter().println("<script type=\"text/javascript\">location.href=\""+getRedirectUri(request)+"\"</script>");
 	}
 
 	private String getSelectCookieValue(String cookieValue) throws UnsupportedEncodingException {
